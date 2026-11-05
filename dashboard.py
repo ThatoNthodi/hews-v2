@@ -87,7 +87,7 @@ if not df.empty:
     show = df.copy()
     for col in ["Engine tier", "AI suggested", "Final tier"]:
         show[col] = show[col].apply(tier_name)
-    st.dataframe(show, witdth=''stretch'', hide_index=True)
+    st.dataframe(show, width="stretch", hide_index=True)
 
 if comms:
     st.subheader("Worker alerts sent")
