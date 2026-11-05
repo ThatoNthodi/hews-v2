@@ -35,6 +35,22 @@ python -m hews.run --offline         # simulated day, no AI needed
 ```
 
 To use AI agents for free with a local model (Ollama): `export HEWS_PROVIDER=ollama` then `python -m hews.run`.
+### Azure AI Foundry (used for the hackathon demo)
+
+The agents run on a GPT-5.2 deployment in Azure AI Foundry. In PowerShell (Windows):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+$env:HEWS_PROVIDER = "azure"
+$env:AZURE_OPENAI_ENDPOINT = "https://<your-resource>.services.ai.azure.com/"
+$env:AZURE_OPENAI_API_KEY = "<your-key>"
+$env:AZURE_OPENAI_DEPLOYMENT = "<your-deployment-name>"
+python -m hews.run
+```
+
+Keys are read from environment variables only and are never stored in the repository. See `.env.example` for the variable names. If Azure is not configured, or any AI call fails, every agent falls back to its deterministic behaviour, so the system keeps working offline.
 To use the Claude API instead: `export ANTHROPIC_API_KEY=...` then `python -m hews.run`.
 
 Status: version 2.0 core. Messages are dry-run (printed, not sent). Live WhatsApp/SMS sending,
