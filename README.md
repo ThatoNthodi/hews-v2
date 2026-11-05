@@ -1,4 +1,5 @@
 # Zanti HEWS v2: the agent team
+**Live dashboard:** https://zanti-hews.streamlit.app/ (shows a sample run; AI agents run on Azure AI Foundry, GPT-5.2)
 
 HEWS stands for Heat Early Warning System. Version 2 replaces the single rules page with a team of agents that
 each do one job, with safety rules the AI cannot break.
