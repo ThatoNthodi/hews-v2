@@ -52,7 +52,15 @@ python -m hews.run
 
 Keys are read from environment variables only and are never stored in the repository. See `.env.example` for the variable names. If Azure is not configured, or any AI call fails, every agent falls back to its deterministic behaviour, so the system keeps working offline.
 To use the Claude API instead: `export ANTHROPIC_API_KEY=...` then `python -m hews.run`.
+### Evidence: audit trail
 
+`docs/sample_audit.jsonl` holds the first 15 entries of a real run with Azure AI Foundry enabled. Each entry records the agent, its action and the crew-level data it used, and is chained to the previous entry by a hash, so any edit to the log breaks the chain. The entries show the guardrails working:
+
+- The assessor logs what the AI suggested, what the deterministic engine said, and the final tier. The AI can only raise a tier, never lower it.
+- The comms agent logs where each language came from: `vetted-template` for reviewed text, or `ai-draft` for languages with no vetted text.
+- No individual health data is stored. Entries contain crew-level information only.
+
+AI-drafted translations (for example Sepedi) must be reviewed by a native speaker before any real deployment.
 Status: version 2.0 core. Messages are dry-run (printed, not sent). Live WhatsApp/SMS sending,
 real sensor feeds and the supervisor dashboard come next. Thresholds are illustrative and need
 calibration with an occupational-health physician.
