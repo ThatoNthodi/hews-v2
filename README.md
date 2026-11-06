@@ -63,6 +63,7 @@ streamlit run dashboard.py
 ```
 
 The dashboard opens at http://localhost:8501. Use the sidebar to switch between your latest run (`out/audit.jsonl`) and the sample log in `docs/`. The sample log works without running anything, so the dashboard can be viewed straight after cloning.
+
 ### Evidence: audit trail
 
 `docs/sample_audit.jsonl` holds the first 15 entries of a real run with Azure AI Foundry enabled. Each entry records the agent, its action and the crew-level data it used, and is chained to the previous entry by a hash, so any edit to the log breaks the chain. The entries show the guardrails working:
@@ -75,3 +76,14 @@ AI-drafted translations (for example Sepedi) must be reviewed by a native speake
 Status: version 2.0 core. Messages are dry-run (printed, not sent). Live WhatsApp/SMS sending,
 real sensor feeds and the supervisor dashboard come next. Thresholds are illustrative and need
 calibration with an occupational-health physician.
+
+### Responsible AI
+
+The design follows Microsoft's four-stage process for generative AI (Map, Measure, Mitigate, Manage), which lines up with the NIST AI Risk Management Framework.
+
+- **Map:** the harms we identified are an AI weakening a safety decision, wrong or unvetted translations, exposure of worker health data, misuse for discipline, alert fatigue, and AI failure.
+- **Measure:** the audit log records the engine tier, the AI's suggested tier and the final tier for every cycle, so the AI's influence can be counted. The daily report counts AI raises, fallback uses and emergencies, and automated tests in `tests/` cover the pipeline. Missed-event and false-alarm rates are pilot measures.
+- **Mitigate (layered):** the AI may only raise a tier, never lower it or declare an emergency. The emergency protocol uses no AI. An auditor checks outgoing messages and blocks unsafe or private content. AI agents see crew-level context only, and AI-drafted translations are labelled. Invalid AI output falls back to vetted text and the rules engine.
+- **Manage:** alerts are dry-run until a pilot site agrees. Supervisors and clinicians make the final decisions, thresholds are calibrated with an occupational-health physician, AI-drafted translations are reviewed by native speakers, and the hash-chained audit log supports review.
+
+Known limitations of the underlying service and model are reviewed using the Azure OpenAI transparency note (https://learn.microsoft.com/en-us/legal/cognitive-services/openai/transparency-note) and the model developer's documentation. A Responsible AI Impact Assessment, using Microsoft's template, is planned before any pilot.
